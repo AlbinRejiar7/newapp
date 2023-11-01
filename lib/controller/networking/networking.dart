@@ -17,9 +17,12 @@ class NetworkHelper {
     }
   }
 
-  Future<void> fetchQueryData({String? query}) async {
+  Future<void> fetchQueryData({
+    String? query,
+    String? sortBy,
+  }) async {
     var url = Uri.parse(
-        "https://newsapi.org/v2/everything?q=$query&apiKey=9553fb966acb4a758af1dae41c4b259f");
+        "https://newsapi.org/v2/everything?q=$query&sortBy=$sortBy&apiKey=9553fb966acb4a758af1dae41c4b259f");
     final response = await http.get(url);
     if (response.statusCode == 200) {
       dataModel = NewsApiModel.fromJson(jsonDecode(response.body));

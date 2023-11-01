@@ -1,24 +1,35 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:real_time_news_app1/model/news_model_container.dart';
 import 'package:real_time_news_app1/controller/networking/networking.dart';
+import 'package:real_time_news_app1/model/news_model_container.dart';
 
 import 'detail_news_page.dart';
 
 // ignore: must_be_immutable
 class MyQueryPage extends StatelessWidget {
   String? query;
+  String? sortBy;
 
-  MyQueryPage({super.key, this.query});
+  MyQueryPage({
+    super.key,
+    this.query,
+    this.sortBy,
+  });
 
   @override
   Widget build(BuildContext context) {
     NetworkHelper networkHelper = NetworkHelper();
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text('Your Queries'),
+          centerTitle: true,
+        ),
         body: FutureBuilder(
-          future: networkHelper.fetchQueryData(query: query),
+          future: networkHelper.fetchQueryData(
+            query: query,
+            sortBy: sortBy,
+          ),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());

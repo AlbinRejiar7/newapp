@@ -9,6 +9,8 @@ import 'package:real_time_news_app1/view/tab_pages/technology_tab.dart';
 import 'package:real_time_news_app1/view/tab_pages/topheadline_tab.dart';
 import 'package:real_time_news_app1/widgets/search_query_dialogbox.dart';
 
+import '../contants/country_details.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -17,71 +19,44 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> countryAbbreviations = [
-    'ae',
-    'ar',
-    'at',
-    'au',
-    'be',
-    'bg',
-    'br',
-    'ca',
-    'ch',
-    'cn',
-    'co',
-    'cu',
-    'cz',
-    'de',
-    'eg',
-    'fr',
-    'gb',
-    'gr',
-    'hk',
-    'hu',
-    'id',
-    'ie',
-    'il',
-    'in',
-    'it',
-    'jp',
-    'kr',
-    'lt',
-    'lv',
-    'ma',
-    'mx',
-    'my',
-    'ng',
-    'nl',
-    'no',
-    'nz',
-    'ph',
-    'pl',
-    'pt',
-    'ro',
-    'rs',
-    'ru',
-    'sa',
-    'se',
-    'sg',
-    'si',
-    'sk',
-    'th',
-    'tr',
-    'tw',
-    'ua',
-    'us',
-    've',
-    'za'
-  ];
-
   String? selectedCountry = 'in';
-  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 6,
       child: Scaffold(
-          drawer: Drawer(),
+          resizeToAvoidBottomInset: true,
+          drawer: SafeArea(
+            child: Drawer(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Select The Country ',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    DropdownButton<String>(
+                      borderRadius: BorderRadius.circular(20),
+                      value: selectedCountry,
+                      items: countryAbbreviations.map((country) {
+                        return DropdownMenuItem<String>(
+                          value: country[0],
+                          child: Text(country[1]),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedCountry = newValue;
+                        });
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
           appBar: AppBar(
             bottom: TabBar(isScrollable: true, tabs: [
               Text(
@@ -113,28 +88,14 @@ class _MyHomePageState extends State<MyHomePage> {
               IconButton(
                   onPressed: () {
                     showDialog(
+                        useSafeArea: true,
                         context: context,
-                        builder: (context) =>
-                            SearchQueryDialogBox(controller: controller));
+                        builder: (context) => SearchQueryDialogBox());
                   },
                   icon: Icon(Icons.search)),
               SizedBox(
                 width: 15,
               ),
-              DropdownButton<String>(
-                value: selectedCountry,
-                items: countryAbbreviations.map((String country) {
-                  return DropdownMenuItem<String>(
-                    value: country,
-                    child: Text(country),
-                  );
-                }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    selectedCountry = newValue;
-                  });
-                },
-              )
             ],
             centerTitle: true,
             title: Text(
